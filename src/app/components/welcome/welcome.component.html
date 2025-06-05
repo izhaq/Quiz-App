@@ -1,0 +1,18 @@
+<div class="">
+  <div class="max-w-md w-full space-y-8 p-8">
+    <h3 class="">Welcome to Quiz App</h3>
+    <div>
+      <div class="mb-3">
+        <label for="fullName">Name</label>
+        <input id="fullName" type="text" [(ngModel)]="inputFullName" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" [(ngModel)]="inputPassword" />
+      </div>
+    </div>
+    <div class="mt-6">
+      <button (click)="handleSubmit()" [disabled]="!canSubmit()">Submit</button>
+    </div>
+  </div>
+</div>

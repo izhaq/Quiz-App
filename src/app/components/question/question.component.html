@@ -1,0 +1,27 @@
+<div>
+<div>{{ question().description }}</div>
+<div class="space-y-4">
+  <ul class="space-y-3">
+    @for (answer of question().answers; track answer.id) {
+      <li>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="selectedAnswerId() === answer.id"
+            (change)="handleAnswerSelectionOption(answer.id)"
+          />
+          <span>{{ answer.description }}</span>
+        </label>
+      </li>
+    }
+  </ul>
+</div>
+<div class="mt-6">
+  <button
+    [disabled]="!selectedAnswerId()"
+    (click)="handleNext()"
+  >
+    Next
+  </button>
+</div>
+</div> 

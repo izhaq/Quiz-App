@@ -1,0 +1,242 @@
+[
+  {
+    "id": "q1",
+    "description": "Which lifecycle hook runs after the component's view has been fully initialized",
+    "imageId": "img3",
+    "priority": 4,
+    "answers": [
+      {
+        "id": "1",
+        "description": "ngOnInit"
+      },
+      {
+        "id": "2",
+        "description": "ngAfterViewInit"
+      },
+      {
+        "id": "3",
+        "description": "ngOnDestroy"
+      },
+      {
+        "id": "4",
+        "description": "ngOnChanges"
+      }
+    ]
+  },
+  {
+    "id": "q2",
+    "description": "What is the purpose of resolve in Angular routing",
+    "imageId": "img2",
+    "priority": 5,
+    "answers": [
+      {
+        "id": "1",
+        "description": "To pre-fetch data before navigating to a route"
+      },
+      {
+        "id": "2",
+        "description": "To handle route guards"
+      },
+      {
+        "id": "3",
+        "description": "To define child routes"
+      },
+      {
+        "id": "4",
+        "description": "To redirect to another route"
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "description": "What is the primary purpose of tree shaking in Angular applications?",
+    "imageId": "img6",
+    "priority": 6,
+    "answers": [
+      {
+        "id": "1",
+        "description": "To optimize the application's runtime performance by caching data"
+      },
+      {
+        "id": "2",
+        "description": "To automatically remove unused imports from TypeScript files"
+      },
+      {
+        "id": "3",
+        "description": "To eliminate unused code during the build process, reducing bundle size"
+      },
+      {
+        "id": "4",
+        "description": "To manage component lifecycles more efficiently at runtime"
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "description": "Why is it generally discouraged to call a function directly from an Angular template (e.g., in {{ myFunction() }})?",
+    "imageId": "img7",
+    "priority": 7,
+    "answers": [
+      {
+        "id": "1",
+        "description": "It can cause multiple API calls"
+      },
+      {
+        "id": "2",
+        "description": "It increases change detection cycles and affects performance"
+      },
+      {
+        "id": "3",
+        "description": "It prevents the component from compiling"
+      },
+      {
+        "id": "4",
+        "description": "It breaks two-way data binding"
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "description": "What is one of the main benefits of using Nx with Angular applications?",
+    "imageId": "img8",
+    "priority": 8,
+    "answers": [
+      {
+        "id": "1",
+        "description": "It removes the need for TypeScript in Angular projects"
+      },
+      {
+        "id": "2",
+        "description": "It replaces Angular CLI entirely and is incompatible with it"
+      },
+      {
+        "id": "3",
+        "description": "It provides advanced monorepo support and code sharing between apps and libraries"
+      },
+      {
+        "id": "4",
+        "description": "It automatically generates all UI components with Material Design"
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "description": "What is a computed property in Angular (introduced in Angular 16+)?",
+    "imageId": "img9",
+    "priority": 9,
+    "answers": [
+      {
+        "id": "1",
+        "description": "A variable that stores a static value defined at compile time"
+      },
+      {
+        "id": "2",
+        "description": "A lifecycle hook that runs only once when a component is created"
+      },
+      {
+        "id": "3",
+        "description": "A reactive signal derived from other signals, automatically recalculating when dependencies change"
+      },
+      {
+        "id": "4",
+        "description": "A method used to fetch data from a backend service"
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "description": "What is a circular dependency in Angular, and why is it problematic?",
+    "imageId": "img10",
+    "priority": 10,
+    "answers": [
+      {
+        "id": "1",
+        "description": "When a component depends on itself for rendering, causing an infinite loop"
+      },
+      {
+        "id": "2",
+        "description": "When two or more modules or services import each other directly or indirectly, potentially causing runtime errors or unexpected behavior"
+      },
+      {
+        "id": "3",
+        "description": "When a directive tries to inject a component that doesn't exist"
+      },
+      {
+        "id": "4",
+        "description": "When a service is declared in both root and feature modules simultaneously"
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "description": "How do you create a new Angular component",
+    "imageId": "img11",
+    "priority": 4,
+    "answers": [
+      {
+        "id": "1",
+        "description": "ng create component"
+      },
+      {
+        "id": "2",
+        "description": "ng generate component"
+      },
+      {
+        "id": "3",
+        "description": "ng new component"
+      },
+      {
+        "id": "4",
+        "description": "ng add component"
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "description": "What is the main purpose of signals in Angular (introduced in Angular 16+)?",
+    "imageId": "img12",
+    "priority": 5,
+    "answers": [
+      {
+        "id": "1",
+        "description": "To handle event listeners in templates"
+      },
+      {
+        "id": "2",
+        "description": "To replace Observables in Angular services"
+      },
+      {
+        "id": "3",
+        "description": "To provide a reactive state management system with fine-grained change detection"
+      },
+      {
+        "id": "4",
+        "description": "To improve component rendering performance by disabling zone.js"
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "description": "What is the main benefit of using TanStack Query (Angular Query) in an Angular application?",
+    "imageId": "img13",
+    "priority": 5,
+    "answers": [
+      {
+        "id": "1",
+        "description": "It automatically generates Angular components from JSON schemas"
+      },
+      {
+        "id": "2",
+        "description": "It provides a declarative way to fetch, cache, and update server state with minimal boilerplate"
+      },
+      {
+        "id": "3",
+        "description": "It replaces Angular's built-in HTTPClient module entirely"
+      },
+      {
+        "id": "4",
+        "description": "It is used for template-driven forms and form validation"
+      }
+    ]
+  }
+]
