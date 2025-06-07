@@ -17,20 +17,39 @@ import { ViewType } from '../quiz/types';
   styles: [],
 })
 export class WelcomeComponent {
-  viewChange = output<ViewType>();
-  fullNameChange = output<string>();
-  passwordChange = output<string>();
+  viewChanged = output<ViewType>();
+  fullNameChanged = output<string>();
+  passwordChanged = output<string>();
+  hardcoreModeChanged = output<boolean>();
+  timePerQuestionChanged = output<number>();
 
   inputFullName = signal('');
   inputPassword = signal('');
+  inputHardcoreMode = signal(false);
+  inputTimePerQuestion = signal(30);
 
   canSubmit = computed(() => {
     return this.inputFullName() !== '' && this.inputPassword() !== '';
   });
 
+  onHardcoreModeChange(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    this.inputHardcoreMode.set(checkbox.checked);
+    this.hardcoreModeChanged.emit(checkbox.checked);
+  }
+
+  onTimePerQuestionChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const seconds = parseInt(select.value, 10);
+    this.inputTimePerQuestion.set(seconds);
+    this.timePerQuestionChanged.emit(seconds);
+  }
+
   handleSubmit() {
-    this.fullNameChange.emit(this.inputFullName());
-    this.passwordChange.emit(this.inputPassword());
-    this.viewChange.emit('test');
+    this.fullNameChanged.emit(this.inputFullName());
+    this.passwordChanged.emit(this.inputPassword());
+    this.hardcoreModeChanged.emit(this.inputHardcoreMode());
+    this.timePerQuestionChanged.emit(this.inputTimePerQuestion());
+    this.viewChanged.emit('test');
   }
 }

@@ -1,27 +1,114 @@
-<div>
-<div>{{ question().description }}</div>
-<div class="space-y-4">
-  <ul class="space-y-3">
-    @for (answer of question().answers; track answer.id) {
-      <li>
-        <label>
-          <input
-            type="checkbox"
-            [checked]="selectedAnswerId() === answer.id"
-            (change)="handleAnswerSelectionOption(answer.id)"
-          />
-          <span>{{ answer.description }}</span>
-        </label>
-      </li>
+<div class="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto fade-in">
+  <!-- Question Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div class="text-sm text-gray-600">
+      Question {{ questionNumber() }} of {{ totalQuestions() }}
+    </div>
+    <div class="text-sm text-gray-600">
+      Priority: {{ question().priority }}
+    </div>
+    <div class="flex items-center space-x-2">
+      <span class="text-sm text-gray-600">Time:</span>
+      <div 
+        appTimer
+        [timerDuration]="30"
+        [timerAutoStart]="false"
+        [timerWarningThreshold]="10"
+        class="px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800 question-timer">
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Image -->
+  <div class="image-container mb-6 h-64 bg-gray-100 rounded-lg overflow-hidden relative">
+    @if (imageLoading()) {
+      <!-- Loading placeholder -->
+      <div class="image-placeholder w-full h-full flex items-center justify-center">
+        <div class="text-gray-500 text-center">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+          <span class="text-sm">Loading image...</span>
+        </div>
+      </div>
     }
-  </ul>
-</div>
-<div class="mt-6">
-  <button
-    [disabled]="!selectedAnswerId()"
-    (click)="handleNext()"
-  >
-    Next
-  </button>
-</div>
+    
+    @if (currentImageUrl() && !imageLoading()) {
+      <img 
+        [src]="currentImageUrl()" 
+        [alt]="'Question ' + questionNumber() + ' image'"
+        class="w-full h-full object-cover image-loaded"
+        (load)="onImageLoad()"
+        (error)="onImageError()"
+      />
+    }
+    
+    @if (!imageUrl() && !imageLoading()) {
+      <!-- No image placeholder -->
+      <div class="w-full h-full flex items-center justify-center bg-gray-50">
+        <div class="text-gray-400 text-center">
+          <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-sm">No image available</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Question Text -->
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">
+      {{ question().description }}
+    </h2>
+  </div>
+
+  <!-- Answer Options -->
+  <div class="space-y-3 mb-6">
+    @for (answer of question().answers; track answer.id) {
+      <label 
+        class="flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-50"
+        [class.border-blue-500]="selectedAnswerId() === answer.id"
+        [class.bg-blue-50]="selectedAnswerId() === answer.id"
+        [class.border-gray-300]="selectedAnswerId() !== answer.id"
+      >
+        <input
+          type="radio"
+          [value]="answer.id"
+          [checked]="selectedAnswerId() === answer.id"
+          (change)="handleAnswerSelectionOption(answer.id)"
+          class="sr-only"
+        />
+        <div 
+          class="w-4 h-4 rounded-full border-2 mr-3 flex items-center justify-center"
+          [class.border-blue-500]="selectedAnswerId() === answer.id"
+          [class.bg-blue-500]="selectedAnswerId() === answer.id"
+          [class.border-gray-400]="selectedAnswerId() !== answer.id"
+        >
+          @if (selectedAnswerId() === answer.id) {
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          }
+        </div>
+        <span class="text-gray-700">{{ answer.description }}</span>
+      </label>
+    }
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex justify-end space-x-3">
+    @if (hardcoreMode()) {
+      <div class="text-sm text-red-600 flex items-center mr-4">
+        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        Hardcore Mode - One mistake ends the quiz!
+      </div>
+    }
+    
+    <button
+      (click)="handleNext()"
+      [disabled]="!selectedAnswerId()"
+      class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors duration-200"
+    >
+      Next Question
+    </button>
+  </div>
 </div> 

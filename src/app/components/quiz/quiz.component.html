@@ -1,16 +1,131 @@
-<div>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
   @if (currentView() === 'welcome') {
-  <app-welcome
-    (viewChange)="setView($event)"
-    (fullNameChange)="setFullName($event)"
-    (passwordChange)="setPassword($event)"
-  />
-  } @else if (currentView() === 'test' && currentQuestion()) {
-  <app-question
-    [question]="currentQuestion()!"
-    (answerSelected)="handleAnswer($event.questionId, $event.answerId)"
-  />
-  } @else if (currentView() === 'summary') {
-  <app-summary />
+    <app-welcome
+      (viewChanged)="setView($event)"
+      (fullNameChanged)="setFullName($event)"
+      (passwordChanged)="setPassword($event)"
+      (hardcoreModeChanged)="setHardcoreMode($event)"
+      (timePerQuestionChanged)="setTimePerQuestion($event)"
+    />
+  }
+
+  @if (currentView() === 'test') {
+    <div class="flex min-h-screen">
+      <!-- Side Panel -->
+      <div class="w-80 bg-white shadow-lg border-r border-gray-200 p-6">
+        <div class="space-y-6">
+          <!-- Quiz Info -->
+          <div class="text-center">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Angular Quiz</h2>
+            <div class="text-sm text-gray-600">
+              <p>{{ fullName() }}</p>
+              @if (hardcoreMode()) {
+                <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mt-1">
+                  🔥 Hardcore Mode
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Timer -->
+          <div class="bg-gray-50 rounded-lg p-4 text-center">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Time Remaining</h3>
+            <div 
+              appTimer
+              [timerDuration]="timePerQuestion()"
+              [timerAutoStart]="true"
+              [timerWarningThreshold]="10"
+              (timerWarning)="onTimerWarning($event)"
+              (timerComplete)="onTimerComplete()"
+              class="text-3xl font-bold transition-colors duration-200"
+              style="color: var(--timer-color, #2563eb);">
+            </div>
+            @if (isTimerWarning()) {
+              <div class="mt-2">
+                <p class="text-sm text-red-600 font-medium">⚠️ Time running out!</p>
+              </div>
+            }
+          </div>
+
+          <!-- Progress -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-medium text-gray-700">Progress</h3>
+            <div class="bg-gray-200 rounded-full h-3">
+              <div class="bg-blue-600 h-3 rounded-full transition-all duration-300 ease-out"
+                   [style.width.%]="progress().percentage">
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 text-center">{{ progress().text }}</p>
+          </div>
+
+          <!-- Questions Navigation -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-700">Questions</h3>
+            <div class="grid grid-cols-5 gap-2">
+              @for (question of questions(); track question.id; let i = $index) {
+                <div class="w-8 h-8 rounded flex items-center justify-center text-xs font-medium"
+                     [class]="getQuestionStatus(i)">
+                  {{ i + 1 }}
+                </div>
+              }
+            </div>
+            <div class="text-xs text-gray-500 space-y-1">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-blue-600 rounded"></div>
+                <span>Current</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-green-500 rounded"></div>
+                <span>Answered</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 bg-gray-300 rounded"></div>
+                <span>Remaining</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Score (if not hardcore mode) -->
+          @if (!hardcoreMode()) {
+            <div class="bg-blue-50 rounded-lg p-4">
+              <h3 class="text-sm font-medium text-gray-700 mb-2">Current Score</h3>
+              <div class="text-2xl font-bold text-blue-600">
+                {{ score().correct }}/{{ currentQuestionIndex() }}
+              </div>
+              @if (currentQuestionIndex() > 0) {
+                <div class="text-sm text-gray-600">
+                  {{ Math.round((score().correct / currentQuestionIndex()) * 100) }}% correct
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 p-8">
+        @if (currentQuestion()) {
+          <app-question
+            [question]="currentQuestion()!"
+            [questionNumber]="currentQuestionIndex() + 1"
+            [totalQuestions]="questions().length"
+            [hardcoreMode]="hardcoreMode()"
+            (answerSelected)="handleAnswer($event.questionId, $event.answerId)"
+          />
+        }
+      </div>
+    </div>
+  }
+
+  @if (currentView() === 'summary') {
+    <app-summary
+      [fullName]="fullName()"
+      [score]="score()"
+      [quizPassed]="quizPassed()"
+      [hardcoreMode]="hardcoreMode()"
+      [results]="results()"
+      [questions]="questions()"
+      (restartQuiz)="setView('welcome')"
+    />
   }
 </div>

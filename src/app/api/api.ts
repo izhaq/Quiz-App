@@ -15,11 +15,11 @@ export interface Result {
 }
 
 export function getQuestions(): Observable<Question[]> {
-  return of(questions).pipe(delay(2000));
+  return of(questions).pipe(delay(500));
 }
 
 export function getImages(): Observable<Image[]> {
-  return of(images).pipe(delay(2000));
+  return of(images).pipe(delay(500));
 }
 
 export function postResults(
@@ -32,5 +32,5 @@ export function postResults(
     score: Math.random() * 100,
     correctAnswers: 1,
     totalAnswers: 2,
-  }).pipe(delay(3000));
+  }).pipe(delay(1000));
 }

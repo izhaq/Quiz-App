@@ -1,6 +1,182 @@
-<div>
-  <div>
-    <h3>Test Completed</h3>
-    <p>Thank you for completing the test!</p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Main Results Card -->
+    <div class="bg-white rounded-lg shadow-xl overflow-hidden mb-8">
+      <!-- Header -->
+      <div class="text-center py-8 px-6"
+           [class]="quizPassed() ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
+        <div class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center"
+             [class]="quizPassed() ? 'bg-green-400' : 'bg-red-400'">
+          @if (quizPassed()) {
+            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+          } @else {
+            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+            </svg>
+          }
+        </div>
+        
+        <h1 class="text-3xl font-bold mb-2">
+          @if (quizPassed()) {
+            Quiz Completed! 🎉
+          } @else {
+            Quiz {{ hardcoreMode() ? 'Ended' : 'Completed' }}
+          }
+        </h1>
+        
+        <p class="text-xl opacity-90">{{ congratulationsMessage() }}</p>
+        
+        @if (fullName()) {
+          <p class="text-lg opacity-75 mt-2">{{ fullName() }}</p>
+        }
+      </div>
+
+      <!-- Score Summary -->
+      <div class="p-8">
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+          <!-- Score -->
+          <div class="text-center">
+            <div class="text-4xl font-bold"
+                 [class]="quizPassed() ? 'text-green-600' : 'text-red-600'">
+              {{ score().percentage }}%
+            </div>
+            <div class="text-gray-600 font-medium">Final Score</div>
+          </div>
+          
+          <!-- Correct Answers -->
+          <div class="text-center">
+            <div class="text-4xl font-bold text-blue-600">
+              {{ score().correct }}/{{ score().total }}
+            </div>
+            <div class="text-gray-600 font-medium">Correct Answers</div>
+          </div>
+          
+          <!-- Status -->
+          <div class="text-center">
+            <div class="text-lg font-bold mb-2"
+                 [class]="quizPassed() ? 'text-green-600' : 'text-red-600'">
+              @if (quizPassed()) {
+                ✅ PASSED
+              } @else {
+                ❌ {{ hardcoreMode() ? 'ENDED' : 'FAILED' }}
+              }
+            </div>
+            @if (hardcoreMode()) {
+              <div class="text-sm text-red-600 font-medium">
+                🔥 Hardcore Mode Active
+              </div>
+            } @else {
+              <div class="text-gray-600 font-medium">
+                70% required to pass
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-8">
+          <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <span>Progress</span>
+            <span>{{ score().correct }}/{{ score().total }} questions correct</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+            <div class="h-3 rounded-full transition-all duration-300"
+                 [class]="quizPassed() ? 'bg-green-500' : 'bg-red-500'"
+                 [style.width.%]="score().percentage">
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            (click)="onRestartQuiz()"
+            class="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+          >
+            Take Quiz Again
+          </button>
+          
+          @if (quizPassed()) {
+            <button
+              class="px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200"
+            >
+              Share Results
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Results -->
+    <div class="bg-white rounded-lg shadow-xl p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Question Review</h2>
+      
+      <div class="space-y-6">
+        @for (result of detailedResults(); track result.question.id; let i = $index) {
+          <div class="border rounded-lg p-6"
+               [class]="result.isCorrect ? 'border-green-200 bg-green-50' : result.wasAnswered ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'">
+            
+            <!-- Question Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <span class="bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">
+                  Question {{ i + 1 }}
+                </span>
+                
+                @if (result.isCorrect) {
+                  <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    ✅ Correct
+                  </span>
+                } @else if (result.wasAnswered) {
+                  <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    ❌ Incorrect
+                  </span>
+                } @else {
+                  <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    ⏰ Not Answered
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Question Text -->
+            <h3 class="font-semibold text-gray-900 mb-4">{{ result.question.description }}</h3>
+
+            <!-- Answers -->
+            <div class="space-y-2">
+              @for (answer of result.question.answers; track answer.id) {
+                <div class="flex items-center p-3 rounded"
+                     [class]="getAnswerClass(answer.id, result)">
+                  
+                  @if (answer.id === result.question.correctAnswerId) {
+                    <svg class="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                  } @else if (result.selectedAnswer?.id === answer.id && !result.isCorrect) {
+                    <svg class="w-5 h-5 text-red-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                  } @else {
+                    <div class="w-5 h-5 mr-3"></div>
+                  }
+                  
+                  <span [class]="answer.id === result.question.correctAnswerId ? 'font-semibold' : ''">
+                    {{ answer.description }}
+                  </span>
+                  
+                  @if (answer.id === result.question.correctAnswerId) {
+                    <span class="ml-auto text-sm text-green-600 font-medium">Correct Answer</span>
+                  } @else if (result.selectedAnswer?.id === answer.id) {
+                    <span class="ml-auto text-sm text-red-600 font-medium">Your Answer</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

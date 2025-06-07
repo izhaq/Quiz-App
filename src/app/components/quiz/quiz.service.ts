@@ -1,7 +1,9 @@
 import { Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError, map, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Question } from './types';
-import { getQuestions, postResults } from '../../api/api';
-import { Observable, tap, catchError, finalize, map } from 'rxjs';
+import { getQuestions } from '../../api/api';
 
 @Injectable()
 export class QuizService {
@@ -13,9 +15,10 @@ export class QuizService {
     this.error.set(null);
 
     return getQuestions().pipe(
+      map(questions => questions.sort((a, b) => a.priority - b.priority)),
       catchError((error) => {
         this.error.set('Failed to load questions: ' + error);
-        throw error;
+        return of([]);
       }),
       finalize(() => this.isLoading.set(false))
     );
@@ -24,18 +27,15 @@ export class QuizService {
   postResults(
     password: string,
     fullName: string,
-    results: { questionId: string; answerId: string }[]
-  ): Observable<void> {
-    this.isLoading.set(true);
-    this.error.set(null);
-
-    return postResults(password, fullName, results).pipe(
-      map(() => void 0),
-      catchError((error) => {
-        this.error.set('Failed to post results: ' + error);
-        throw error;
-      }),
-      finalize(() => this.isLoading.set(false))
-    );
+    results: Array<{ questionId: string; answerId: string }>
+  ): Observable<any> {
+    // Simulate API call
+    console.log('Submitting results:', { password, fullName, results });
+    return new Observable((observer) => {
+      setTimeout(() => {
+        observer.next({ success: true });
+        observer.complete();
+      }, 1000);
+    });
   }
 }
