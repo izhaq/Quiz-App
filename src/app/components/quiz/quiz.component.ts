@@ -3,7 +3,7 @@ import {
   signal,
   ChangeDetectionStrategy,
   inject,
-  computed, Signal, effect, OnInit,
+  computed, Signal, effect, untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WelcomeComponent } from '../welcome/welcome.component';
@@ -16,7 +16,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import {NavigationItem, NavigationItemState} from "../question-side-panel/types";
 import {TimerService} from "../../core/services/timer.service";
 import {Image, Result} from "../../api/api";
-import {tap} from "rxjs";
 
 @Component({
   selector: 'app-quiz',
@@ -33,9 +32,10 @@ import {tap} from "rxjs";
   templateUrl: './quiz.component.html',
   styles: [],
 })
-export class QuizComponent implements OnInit{
+export class QuizComponent {
   constructor() {
     this.initializeTimer();
+    this.setupTimeUpEffect();
   }
 
   private quizService = inject(QuizService);
@@ -51,7 +51,7 @@ export class QuizComponent implements OnInit{
   images = toSignal(this.quizService.loadImages(), { initialValue: [] });
   summaryResult = signal<Result>({score: 0, correctAnswers: 0, totalAnswers: 0});
   isLoadingSummaryResult = signal<boolean>(false);
-  timeIsUp$ = this.timerService.timeUp$;
+  timeIsUp = toSignal(this.timerService.timeUp$, { initialValue: false });
 
   logging: Signal<boolean> = computed(() => Boolean(this.fullName() && this.password()));
 
@@ -112,10 +112,16 @@ export class QuizComponent implements OnInit{
     }));
   });
 
-  ngOnInit() {
-    this.timeIsUp$.subscribe(() => {
-      this.handleAnswerOnTimeUp();
-    })
+  private setupTimeUpEffect() {
+    effect(() => {
+      const timeUp = this.timeIsUp();
+      
+      if (timeUp) {
+        untracked(() => {
+          this.handleAnswerOnTimeUp();
+        });
+      }
+    });
   }
 
   setView(view: ViewType) {

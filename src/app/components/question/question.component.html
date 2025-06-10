@@ -4,7 +4,7 @@
       <div class="timer text-sm font-medium text-gray-600">
         Question {{currentQuestionNumber()}} of {{totalQuestions()}}
       </div>
-      <div [appTimer]="30" class="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded">
+      <div [appTimer]="30" [class]="shouldBeDisabled() ? 'text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded invisible' : 'text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded'">
       </div>
     </div>
     
