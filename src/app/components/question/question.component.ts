@@ -3,7 +3,7 @@ import {
   signal,
   ChangeDetectionStrategy,
   input,
-  output,
+  output, computed,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
@@ -30,6 +30,9 @@ export class QuestionComponent {
   answerSelected = output<{ questionId: string; answerId: string }>();
 
   selectedAnswerId = signal('');
+  shouldBeDisabled = computed(() => {
+    return typeof this.answerId() === 'string';
+  })
 
   handleAnswerSelectionOption(answerId: string) {
     if (this.selectedAnswerId() === answerId) {

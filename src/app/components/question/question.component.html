@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center min-h-full px-4 py-8">
-  <div [class]="answerId() ? 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6 opacity-70 pointer-events-none' : 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6'">
+  <div [class]="shouldBeDisabled() ? 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6 opacity-70 pointer-events-none' : 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6'">
     <div class="flex justify-between items-center mb-4">
       <div class="timer text-sm font-medium text-gray-600">
         Question {{currentQuestionNumber()}} of {{totalQuestions()}}
@@ -10,7 +10,7 @@
     
     <div class="flex gap-8">
       <div class="flex-1 space-y-6">
-        <div [class]="answerId() ? 'text-lg font-semibold text-gray-500' : 'text-lg font-semibold text-gray-900'">
+        <div [class]="shouldBeDisabled() ? 'text-lg font-semibold text-gray-500' : 'text-lg font-semibold text-gray-900'">
           {{ question().description }}
         </div>
         
@@ -20,7 +20,7 @@
               <li>
                 <app-checkbox
                   [isChecked]="selectedAnswerId() === answer.id || answerId() === answer.id"
-                  [isDisabled]="!!answerId()"
+                  [isDisabled]="shouldBeDisabled()"
                   (selectionChange)="handleAnswerSelectionOption(answer.id)">
                   {{ answer.description }}
                 </app-checkbox>
