@@ -6,7 +6,7 @@ export interface Question {
   answers: Array<{
     id: string;
     description: string;
-  }>;
+  }>; 
 }
 
 export type ViewType = 'welcome' | 'test' | 'summary'; 

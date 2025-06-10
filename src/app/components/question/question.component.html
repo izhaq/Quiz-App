@@ -1,27 +1,53 @@
-<div>
-<div>{{ question().description }}</div>
-<div class="space-y-4">
-  <ul class="space-y-3">
-    @for (answer of question().answers; track answer.id) {
-      <li>
-        <label>
-          <input
-            type="checkbox"
-            [checked]="selectedAnswerId() === answer.id"
-            (change)="handleAnswerSelectionOption(answer.id)"
-          />
-          <span>{{ answer.description }}</span>
-        </label>
-      </li>
-    }
-  </ul>
-</div>
-<div class="mt-6">
-  <button
-    [disabled]="!selectedAnswerId()"
-    (click)="handleNext()"
-  >
-    Next
-  </button>
-</div>
+<div class="flex items-center justify-center min-h-full px-4 py-8">
+  <div [class]="answerId() ? 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6 opacity-70 pointer-events-none' : 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6'">
+    <div class="flex justify-between items-center mb-4">
+      <div class="timer text-sm font-medium text-gray-600">
+        Question 1 of 30
+      </div>
+      <div [appTimer]="30" class="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded">
+      </div>
+    </div>
+    
+    <div class="flex gap-8">
+      <div class="flex-1 space-y-6">
+        <div [class]="answerId() ? 'text-lg font-semibold text-gray-500' : 'text-lg font-semibold text-gray-900'">
+          {{ question().description }}
+        </div>
+        
+        <div class="space-y-4">
+          <ul class="space-y-4">
+            @for (answer of question().answers; track answer.id) {
+              <li>
+                <app-checkbox
+                  [isChecked]="selectedAnswerId() === answer.id || answerId() === answer.id"
+                  [isDisabled]="!!answerId()"
+                  (selectionChange)="handleAnswerSelectionOption(answer.id)">
+                  {{ answer.description }}
+                </app-checkbox>
+              </li>
+            }
+          </ul>
+        </div>
+        
+        <div class="pt-6">
+          <button
+            [disabled]="!selectedAnswerId()"
+            (click)="handleNext()"
+            class="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+      
+      <app-image
+        [imageUrl]="image().url"
+        [imageId]="question().id"
+        [alt]="'Question image for ' + question().description"
+        [width]="256"
+        [height]="192"
+        class="rounded-lg overflow-hidden">
+      </app-image>
+    </div>
+  </div>
 </div> 

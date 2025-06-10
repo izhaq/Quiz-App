@@ -1,0 +1,12 @@
+<label [class]="isDisabled ? 'flex items-start space-x-3 p-3 rounded-md border border-gray-200 cursor-not-allowed transition-colors bg-gray-50' : 'flex items-start space-x-3 p-3 rounded-md border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors'">
+  <input
+    type="checkbox"
+    [disabled]="isDisabled"
+    [checked]="isChecked"
+    (change)="onSelectionChange()"
+    class="mt-1 h-4 w-4 appearance-none border-2 border-gray-300 rounded bg-white checked:bg-orange-600 checked:border-orange-600 focus:ring-orange-500 focus:ring-2 relative checked:after:content-['✓'] checked:after:text-white checked:after:text-xs checked:after:absolute checked:after:top-0 checked:after:left-0 checked:after:w-full checked:after:h-full checked:after:flex checked:after:items-center checked:after:justify-center"
+  />
+  <span [class]="isDisabled ? 'text-gray-400 leading-relaxed' : 'text-gray-700 leading-relaxed'">
+    <ng-content></ng-content>
+  </span>
+</label> 
