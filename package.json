@@ -4,8 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 6777",
-    "build": "ng build",
-    "install": "npm install"
+    "build": "ng build"
   },
   "dependencies": {
     "@angular/animations": "^19.0.6",
