@@ -19,6 +19,8 @@
       [question]="currentViewedQuestion()!"
       [answerId]="currentViewedQuestionAnswerId()"
       [image]="currentViewQuestionImage()"
+      [currentQuestionNumber]="currentViewedQuestionNumber()"
+      [totalQuestions]="questions().length"
       (answerSelected)="handleAnswer($event.questionId, $event.answerId)"
     />
     } @else if (currentView() === 'summary') {

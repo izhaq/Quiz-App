@@ -13,6 +13,7 @@ export class QuizService {
     this.error.set(null);
 
     return getQuestions().pipe(
+        map(questions => questions.sort((a, b) => a.priority - b.priority)),
       catchError((error) => {
         this.error.set('Failed to load questions: ' + error);
         throw error;

@@ -83,6 +83,10 @@ export class QuizComponent implements OnInit{
     }
   })
 
+  currentViewedQuestionNumber = computed(() => {
+    return this.currentViewedQuestionIndex() + 1;
+  })
+
   currentViewedQuestion = computed(() => {
     return this.questions()[this.currentViewedQuestionIndex()] ?? null;
   })
@@ -125,7 +129,7 @@ export class QuizComponent implements OnInit{
     effect(() => {
       this.currentQuestionIndex();
       if(this.logging()) {
-        this.timerService.reset(5);
+        this.timerService.reset(30);
       }
     })
   }
@@ -191,8 +195,5 @@ export class QuizComponent implements OnInit{
       this.currentView.set('test')
     }
     this.currentViewedQuestionIndex.set(currentViewedQuestionIndex);
-    // Handle navigation to selected question from side panel
-    console.log('Navigate to question:', questionId);
-    // TODO: Add navigation logic when side panel questions are clicked
   }
 }

@@ -24,6 +24,9 @@ export class QuestionComponent {
   question = input.required<Question>();
   answerId = input<string>();
   image = input<Image>({id: '', url: ''});
+  currentQuestionNumber = input<number>();
+  totalQuestions = input<number>();
+
   answerSelected = output<{ questionId: string; answerId: string }>();
 
   selectedAnswerId = signal('');

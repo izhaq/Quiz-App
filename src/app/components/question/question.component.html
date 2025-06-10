@@ -2,7 +2,7 @@
   <div [class]="answerId() ? 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6 opacity-70 pointer-events-none' : 'max-w-4xl w-full bg-white rounded-lg shadow-lg border border-gray-200 p-8 space-y-6'">
     <div class="flex justify-between items-center mb-4">
       <div class="timer text-sm font-medium text-gray-600">
-        Question 1 of 30
+        Question {{currentQuestionNumber()}} of {{totalQuestions()}}
       </div>
       <div [appTimer]="30" class="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded">
       </div>
