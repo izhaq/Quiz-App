@@ -1,0 +1,16 @@
+<div class="w-72 bg-white border-r border-gray-200 shadow-sm h-full flex flex-col">
+  <div class="sticky top-0 bg-white p-4 border-b border-gray-200 z-10">
+    <h3 class="text-lg font-semibold text-gray-900">Questions</h3>
+    <p class="text-sm text-gray-600 mt-1">Navigate through your test</p>
+  </div>
+  
+  <div class="flex-1 overflow-y-auto p-4 space-y-1">
+    @for (nav of navigations(); track nav.id) {
+      <app-question-panel-item
+        [navigationItem]="nav"
+        [questionNumber]="$index + 1"
+        (questionClick)="onQuestionClick($event)"
+      ></app-question-panel-item>
+    }
+  </div>
+</div> 

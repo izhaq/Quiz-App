@@ -1,16 +1,28 @@
-<div>
-  @if (currentView() === 'welcome') {
-  <app-welcome
-    (viewChange)="setView($event)"
-    (fullNameChange)="setFullName($event)"
-    (passwordChange)="setPassword($event)"
-  />
-  } @else if (currentView() === 'test' && currentQuestion()) {
-  <app-question
-    [question]="currentQuestion()!"
-    (answerSelected)="handleAnswer($event.questionId, $event.answerId)"
-  />
-  } @else if (currentView() === 'summary') {
-  <app-summary />
-  }
+<div class="flex h-screen bg-gray-50">
+  <!-- Left Side Panel -->
+  <app-question-side-panel 
+    [navigations]="navigations()"
+    [currentQuestionId]="currentQuestionIndex() + 1"
+    (questionSelected)="onQuestionSelected($event)">
+  </app-question-side-panel>
+  
+  <!-- Main Content Area -->
+  <div class="flex-1 overflow-y-auto">
+    @if (currentView() === 'welcome') {
+    <app-welcome
+      (viewChange)="setView($event)"
+      (fullNameChange)="setFullName($event)"
+      (passwordChange)="setPassword($event)"
+    />
+    } @else if (currentView() === 'test' && currentQuestion()) {
+    <app-question
+      [question]="currentViewedQuestion()!"
+      [answerId]="currentViewedQuestionAnswerId()"
+      [image]="currentViewQuestionImage()"
+      (answerSelected)="handleAnswer($event.questionId, $event.answerId)"
+    />
+    } @else if (currentView() === 'summary') {
+    <app-summary  [testResult]="summaryResult()" [isLoading]="isLoadingSummaryResult()"/>
+    }
+  </div>
 </div>

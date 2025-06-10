@@ -1,3 +1,7 @@
 node_modules
 dist
 .angular
+Palo-Alto-Networks.pdf
+.idea
+.cursor
+.DS_Store
